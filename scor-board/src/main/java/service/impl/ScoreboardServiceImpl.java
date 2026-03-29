@@ -28,4 +28,9 @@ public class ScoreboardServiceImpl implements IScoreboardService {
         )
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void updateScore(Match match, long homeScore, long awayScore) throws IllegalArgumentException {
+
+    }
 }

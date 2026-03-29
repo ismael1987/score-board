@@ -27,4 +27,18 @@ public class ScoreboardServiceTest {
         List<Match> summary = scoreboard.getSummary();
         assertFalse(summary.isEmpty()); // Match should be in summary after starting
     }
+
+    @Test
+    void testUpdateScore() {
+        Match match = scoreboard.startMatch(Team.SPAIN, Team.BRAZIL);
+        scoreboard.updateScore(match, 3, 2);
+
+        assertEquals(3, match.getHomeScore());
+        assertEquals(2, match.getAwayScore());
+
+        // Test negative score exception
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                scoreboard.updateScore(match, -1, 2));
+        assertEquals("Scores cannot be negative", exception.getMessage());
+    }
 }
