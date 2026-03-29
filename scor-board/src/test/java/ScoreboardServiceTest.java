@@ -52,4 +52,28 @@ public class ScoreboardServiceTest {
 
         assertEquals("Match not found on scoreboard", exception.getMessage());
     }
+
+    @Test
+    void testGetSummaryOrdering() {
+        Match m1 = scoreboard.startMatch(Team.MEXICO, Team.CANADA);
+        Match m2 = scoreboard.startMatch(Team.SPAIN, Team.BRAZIL);
+        Match m3 = scoreboard.startMatch(Team.GERMANY, Team.FRANCE);
+        Match m4 = scoreboard.startMatch(Team.URUGUAY, Team.ITALY);
+        Match m5 = scoreboard.startMatch(Team.ARGENTINA, Team.AUSTRALIA);
+
+        scoreboard.updateScore(m1, 0, 5);  // total 5
+        scoreboard.updateScore(m2, 10, 2); // total 12
+        scoreboard.updateScore(m3, 2, 2);  // total 4
+        scoreboard.updateScore(m4, 6, 6);  // total 12
+        scoreboard.updateScore(m5, 3, 1);  // total 4
+
+        List<Match> summary = scoreboard.getSummary();
+
+        // Check correct order: total score desc, tie-breaker by recent start
+        assertEquals(m4, summary.get(0)); // Uruguay 6-6 Italy
+        assertEquals(m2, summary.get(1)); // Spain 10-2 Brazil
+        assertEquals(m1, summary.get(2)); // Mexico 0-5 Canada
+        assertEquals(m5, summary.get(3)); // Argentina 3-1 Australia
+        assertEquals(m3, summary.get(4)); // Germany 2-2 France
+    }
 }
