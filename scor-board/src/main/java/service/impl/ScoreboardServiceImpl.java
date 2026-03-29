@@ -49,6 +49,7 @@ public class ScoreboardServiceImpl implements IScoreboardService {
 
     @Override
     public void finishMatch(Match match) throws IllegalArgumentException{
-
+        validateMatchExists(match);
+        matches.remove(match);
     }
 }
