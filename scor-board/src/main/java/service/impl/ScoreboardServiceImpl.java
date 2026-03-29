@@ -15,12 +15,17 @@ public class ScoreboardServiceImpl implements IScoreboardService {
 
     @Override
     public Match startMatch(Team home, Team away) {
-
-        return null;
+        Match match = new Match(home,away);
+        matches.add(match);
+        return match;
     }
 
     @Override
     public List<Match> getSummary() {
-        return null;
+        return matches.stream().sorted(Comparator
+                .comparingLong(Match::getTotalScore)
+                .thenComparing(Match::getStartTime).reversed()
+        )
+                .collect(Collectors.toList());
     }
 }
