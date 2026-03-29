@@ -41,4 +41,15 @@ public class ScoreboardServiceTest {
                 scoreboard.updateScore(match, -1, 2));
         assertEquals("Scores cannot be negative", exception.getMessage());
     }
+
+    @Test
+    void testUpdateNonExistentMatch() {
+        Match match = new Match(Team.MEXICO, Team.CANADA);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                scoreboard.updateScore(match, 1, 1)
+        );
+
+        assertEquals("Match not found on scoreboard", exception.getMessage());
+    }
 }
